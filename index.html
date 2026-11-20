@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Los Caracoles - Bar de Tapas</title>
+  <link href="https://googleapis.com" rel="stylesheet">
+  <style>
+    :root {
+      --color-primario: #b91c1c; /* Cambia este color por el del local */
+      --fondo-tarjeta: rgba(255, 255, 255, 0.94);
+      --texto-oscuro: #1f2937;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Montserrat', sans-serif; }
+    body {
+      /* Cambia 'fondo.jpg' por la imagen de madera o azulejos del local */
+      background: url('fondo.jpg') repeat center center fixed;
+      background-size: cover;
+      color: var(--texto-oscuro);
+      padding-bottom: 80px;
+    }
+    .contenedor { max-width: 600px; margin: 0 auto; padding: 16px; }
+    
+    /* Cabecera y Logo */
+    header { text-align: center; background: var(--fondo-tarjeta); padding: 24px 16px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
+    header img { max-width: 180px; height: auto; margin-bottom: 8px; }
+    header p { font-size: 0.95rem; color: #4b5563; }
+
+    /* Botones principales */
+    .botones-top { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+    .btn { display: block; text-align: center; padding: 14px 10px; border-radius: 12px; text-decoration: none; font-weight: 800; font-size: 0.95rem; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+    .btn-principal { background: var(--color-primario); color: white; }
+    .btn-secundario { background: #111827; color: white; }
+
+    /* Secciones */
+    section { background: var(--fondo-tarjeta); padding: 20px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    h2 { color: var(--color-primario); font-size: 1.3rem; margin-bottom: 12px; border-bottom: 2px solid #e5e7eb; padding-bottom: 6px; }
+
+    /* Carta dinámica desde Google Sheets */
+    .categoria-titulo { font-weight: 800; font-size: 1.05rem; margin-top: 14px; margin-bottom: 6px; color: #111827; text-transform: uppercase; }
+    .item-carta { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #d1d5db; font-size: 0.95rem; }
+    .item-precio { font-weight: 800; color: var(--color-primario); margin-left: 12px; white-space: nowrap; }
+
+    /* Galería simple */
+    .galeria { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .galeria img { width: 100%; height: 130px; object-fit: cover; border-radius: 10px; }
+
+    /* Mapa y Contacto */
+    iframe { width: 100%; height: 220px; border: 0; border-radius: 12px; margin-top: 10px; }
+    .info-lista p { margin-bottom: 8px; font-size: 0.92rem; }
+    .redes { display: flex; gap: 10px; margin-top: 10px; }
+    .redes a { background: #e5e7eb; padding: 8px 14px; border-radius: 8px; text-decoration: none; color: #111827; font-weight: 600; font-size: 0.85rem; }
+
+    /* Barra fija inferior en móvil */
+    .barra-fija { position: fixed; bottom: 0; left: 0; right: 0; background: #111827; display: flex; justify-content: space-around; padding: 10px; z-index: 100; }
+    .barra-fija a { color: white; text-decoration: none; font-weight: 600; font-size: 0.85rem; padding: 6px 12px; border-radius: 8px; }
+    .barra-fija a.wa { background: #16a34a; }
+
+    footer { text-align: center; font-size: 0.75rem; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.8); margin-top: 10px; }
+    footer a { color: white; }
+  </style>
+</head>
+<body>
+
+<div class="contenedor">
+  <!-- CABECERA -->
+  <header>
+    <img src="logo.png" alt="Logo del Local">
+    <p>Tapas caseras y especialidades desde 1994</p>
+  </header>
+
+  <!-- BOTONES RÁPIDOS -->
+  <div class="botones-top">
+    <a href="#carta" class="btn btn-principal">📖 VER CARTA</a>
+    <a href="PEGA_AQUI_ENLACE_RESEÑAS_GOOGLE" target="_blank" class="btn btn-secundario">⭐ DEJAR RESEÑA</a>
+  </div>
+
+  <!-- CARTA DINÁMICA (SE EDITA DESDE GOOGLE SHEETS) -->
+  <section id="carta">
+    <h2>Nuestra Carta</h2>
+    <div id="contenedor-carta">Cargando precios actualizados...</div>
+  </section>
+
+  <!-- GALERÍA DE PRODUCTOS -->
+  <section>
+    <h2>Nuestros Platos</h2>
+    <div class="galeria">
+      <img src="foto1.jpg" alt="Producto 1">
+      <img src="foto2.jpg" alt="Producto 2">
+    </div>
+  </section>
+
+  <!-- SOBRE NOSOTROS (OPCIONAL) -->
+  <section>
+    <h2>Sobre Nosotros</h2>
+    <p style="font-size: 0.92rem; line-height: 1.5;">Más de 30 años ofreciendo cocina tradicional con el mejor producto local y ambiente familiar.</p>
+  </section>
+
+  <!-- CONTACTO, HORARIOS Y MAPA -->
+  <section id="contacto">
+    <h2>Horario y Ubicación</h2>
+    <div class="info-lista">
+      <p><strong>🕒 Horario:</strong> Mar - Dom: 12:00 a 16:30 y 20:00 a 00:00 (Lunes cerrado)</p>
+      <p><strong>📍 Dirección:</strong> Calle Ejemplo 12, Sanlúcar de Barrameda</p>
+      <p><strong>📞 Teléfono:</strong> <a href="tel:+34656838122">656 83 81 22</a></p>
+    </div>
+    <div class="redes">
+      <a href="https://instagram.com" target="_blank">Instagram</a>
+      <a href="https://facebook.com" target="_blank">Facebook</a>
+    </div>
+    <!-- Pega aquí el iframe de Google Maps -->
+    <iframe src="https://google.com" loading="lazy"></iframe>
+  </section>
+
+  <footer>
+    <p>© 2026 Los Caracoles | <a href="#" onclick="alert('Titular: Nombre del Local SL - NIF: B00000000 - Dirección del local. Web informativa sin cookies de rastreo.'); return false;">Aviso Legal</a></p>
+  </footer>
+</div>
+
+<!-- BARRA FIJA INFERIOR EN MÓVIL -->
+<div class="barra-fija">
+  <a href="tel:+34656838122">📞 Llamar</a>
+  <a href="https://google.com" target="_blank">📍 Cómo llegar</a>
+  <a href="https://wa.me" target="_blank" class="wa">💬 WhatsApp</a>
+</div>
+
+<script>
+  // 1. En Google Sheets: Archivo > Compartir > Publicar en la web > Elegir pestaña y formato CSV
+  const urlGoogleSheetsCSV = 'PEGA_AQUI_TU_ENLACE_CSV_DE_GOOGLE_SHEETS';
+
+  fetch(urlGoogleSheetsCSV)
+    .then(res => res.text())
+    .then(texto => {
+      const filas = texto.split('\n').slice(1);
+      let html = '';
+      let categoriaActual = '';
+
+      filas.forEach(fila => {
+        const columnas = fila.split(',');
+        if (columnas.length >= 3) {
+          const cat = columnas[0].trim();
+          const prod = columnas[1].trim();
+          const prec = columnas[2].trim();
+
+          if (cat && cat !== categoriaActual) {
+            categoriaActual = cat;
+            html += `<div class="categoria-titulo">${cat}</div>`;
+          }
+          if (prod) {
+            html += `<div class="item-carta"><span>${prod}</span><span class="item-precio">${prec}</span></div>`;
+          }
+        }
+      });
+      document.getElementById('contenedor-carta').innerHTML = html || '<p>Carta disponible en el local.</p>';
+    })
+    .catch(() => {
+      document.getElementById('contenedor-carta').innerHTML = '<p>No se pudo cargar la carta en este momento.</p>';
+    });
+</script>
+
+</body>
+</html>
